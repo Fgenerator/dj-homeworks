@@ -38,18 +38,18 @@ def stats(request):
     print(counter_click)
     print(counter_show)
     try:
-        test_conversation = counter_click['test'] / counter_show['test']
+        test_conversion = counter_click['test'] / counter_show['test']
     except ZeroDivisionError:
-        test_conversation = 0
+        test_conversion = 0
     try:
-        original_conversation = counter_click['original'] / counter_show['original']
+        original_conversion = counter_click['original'] / counter_show['original']
     except ZeroDivisionError:
-        original_conversation = 0
+        original_conversion = 0
     # Реализуйте логику подсчета отношения количества переходов к количеству показов страницы
     # Чтобы отличить с какой версии лендинга был переход
     # проверяйте GET параметр marker который может принимать значения test и original
     # Для вывода результат передайте в следующем формате:
     return render_to_response('stats.html', context={
-        'test_conversion': test_conversation,
-        'original_conversion': original_conversation,
+        'test_conversion': test_conversion,
+        'original_conversion': original_conversion,
     })
