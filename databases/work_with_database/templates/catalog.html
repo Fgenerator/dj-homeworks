@@ -10,14 +10,30 @@
 
         <div class="sort-block">
             {# Здесь должен быть раздел с сортировкой #}
+            <p style="display: inline-block; margin-right: 25px">Сортировать по:</p>
+            <p style="display: inline-block; margin-right: 25px">
+                <a href="/catalog?sort=name">Название</a>
+                </p>
+            <p style="display: inline-block; margin-right: 25px">
+                <a href="/catalog?sort=min_price">Начиная с дешевых</a>
+                </p>
+            <p style="display: inline-block; margin-right: 25px">
+                <a href="/catalog?sort=max_price">Начиная с дорогих</a>
+                </p>
         </div>
 
-        <div class="content">
+        <div class="content" style="display: grid;
+                                    height: 100px;
+                                    grid-template-columns: repeat(2, 1fr);
+                                    grid-template-rows: 900px;">
             {# Здесь должен отображаться каталог с телефонами #}
                 {% for phone in phones %}
-                    <h1>{{ phone.name }}</h1>
-                    <li>Стоимость: {{ phone.price }}</li>
-                    <li>{{ phone.image }}</li>
+                <div>
+                    <h1><a href="/catalog/{{ phone.slug }}">{{ phone.name }}</a></h1>
+                    <p>Стоимость: {{ phone.price }}р.</p>
+                    <img src="{{ phone.image }}"></img>
+                </div>
+
                 {% endfor %}
         </div>
     </div>
