@@ -4,23 +4,22 @@ from phones.models import Phone
 
 
 def show_catalog(request):
-    template = 'catalog.html'
-
-    filter = request.GET.get('sort')
-
-    if filter == 'name':
-        phones = Phone.objects.order_by('name')
-    elif filter == 'min_price':
-        phones = Phone.objects.order_by('price')
-    elif filter == 'max_price':
-        phones = Phone.objects.order_by('-price')
-    else:
-        phones = Phone.objects.order_by('name')
-
-    context = {
-        'phones': phones,
+    sort_dict = {
+        'name': 'name',
+        'min_price': 'price',
+        'max_price': '-price'
     }
-    return render(request, template, context)
+
+    phones = Phone.objects.all()
+    sort_key = request.GET.get('sort')
+
+    if sort_key:
+        phones = phones.order_by(sort_dict.get(sort_key))
+    return render(
+        request,
+        'catalog.html',
+        context={'phones': phones}
+    )
 
 
 def show_product(request, slug):
