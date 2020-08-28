@@ -128,7 +128,7 @@ LOGGING = {
         'level': 'WARNING',
     },
     'loggers': {
-        'django': {
+        'django.db': {
             'handlers': ['console'],
             'level': 'DEBUG', # os.getenv('DJANGO_LOG_LEVEL', 'INFO')
             'propagate': False,
