@@ -12,17 +12,18 @@ FILES_PATH = Path(settings.FILES_PATH)
 
 def file_list(request, date=None):
     template_name = 'index.html'
-    files = os.listdir(FILES_PATH)
+    files = Path.iterdir(FILES_PATH)
     context = {
         'files': [],
         'date': ''
     }
     for file in files:
-        file_to_open = FILES_PATH / file
 
-        raw_ctime = os.path.getctime(file_to_open)
+        #raw_ctime = os.path.getctime(file_to_open)
+        raw_ctime = file.stat().st_ctime
         converted_ctime = datetime.datetime.fromtimestamp(raw_ctime)
-        raw_mtime = os.path.getmtime(file_to_open)
+        #raw_mtime = os.path.getmtime(file_to_open)
+        raw_mtime = file.stat().st_mtime
         converted_mtime = datetime.datetime.fromtimestamp(raw_mtime)
 
 
@@ -34,13 +35,11 @@ def file_list(request, date=None):
 
         context['files'].append(
             {
-               'name': file,
+               'name': file.name,
                 'ctime': converted_ctime,
                 'mtime': converted_mtime
             }
         )
-    print(converted_ctime.date)
-    print(converted_mtime.date)
 
     if date:
         context['date'] = date
