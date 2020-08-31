@@ -21,10 +21,10 @@ def file_list(request, date=None):
 
         #raw_ctime = os.path.getctime(file_to_open)
         raw_ctime = file.stat().st_ctime
-        converted_ctime = datetime.datetime.fromtimestamp(raw_ctime)
+        converted_ctime = datetime.datetime.fromtimestamp(raw_ctime).date()
         #raw_mtime = os.path.getmtime(file_to_open)
         raw_mtime = file.stat().st_mtime
-        converted_mtime = datetime.datetime.fromtimestamp(raw_mtime)
+        converted_mtime = datetime.datetime.fromtimestamp(raw_mtime).date()
 
 
         # raw_ctime = os.stat(f'{file_to_open}').st_ctime
@@ -58,7 +58,7 @@ def file_list(request, date=None):
 
 def file_content(request, name):
     content = ''
-    file_to_open = FILES_PATH / name
+    file_to_open = FILES_PATH.joinpath(name)
 
     with open(file_to_open, encoding='utf8') as file:
         for line in file:
