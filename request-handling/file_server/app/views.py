@@ -10,6 +10,37 @@ from pathlib import Path
 FILES_PATH = Path(settings.FILES_PATH)
 
 
+def get_ctime(file):
+    raw_ctime = file.stat().st_ctime
+    converted_ctime = datetime.datetime.fromtimestamp(raw_ctime)
+    return converted_ctime
+
+
+def get_mtime(file):
+    raw_mtime = file.stat().st_mtime
+    converted_mtime = datetime.datetime.fromtimestamp(raw_mtime)
+    return converted_mtime
+
+
+def prepare_files(files, date=None):  # TODO filtration by ctime if date
+    temp_context = {
+        'files': []
+    }
+    for file in files:
+        converted_ctime = get_ctime(file)
+
+        converted_mtime = get_mtime(file)
+
+        temp_context['files'].append(
+            {
+                'name': file.name,
+                'ctime': converted_ctime,
+                'mtime': converted_mtime
+            }
+        )
+    return temp_context
+
+
 def file_list(request, date=None):
     template_name = 'index.html'
     files = Path.iterdir(FILES_PATH)
@@ -17,32 +48,14 @@ def file_list(request, date=None):
         'files': [],
         'date': ''
     }
-    for file in files:
-
-        #raw_ctime = os.path.getctime(file_to_open)
-        raw_ctime = file.stat().st_ctime
-        converted_ctime = datetime.datetime.fromtimestamp(raw_ctime).date()
-        #raw_mtime = os.path.getmtime(file_to_open)
-        raw_mtime = file.stat().st_mtime
-        converted_mtime = datetime.datetime.fromtimestamp(raw_mtime).date()
-
-
-        # raw_ctime = os.stat(f'{file_to_open}').st_ctime
-        # raw_mtime = os.stat(f'{file_to_open}').st_mtime
-        #
-        # converted_ctime = datetime.datetime.fromtimestamp(raw_ctime)
-        # converted_mtime = datetime.datetime.fromtimestamp(raw_mtime)
-
-        context['files'].append(
-            {
-               'name': file.name,
-                'ctime': converted_ctime,
-                'mtime': converted_mtime
-            }
-        )
-
     if date:
         context['date'] = date
+
+    else:
+        context['files'] = prepare_files(files)['files']
+
+
+
     # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
     # context = {
     #     'files': [
