@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     'articles.apps.ArticlesConfig'
 ]
 
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -49,6 +54,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE = [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ] + MIDDLEWARE
 
 ROOT_URLCONF = 'website.urls'
 
@@ -69,6 +79,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'website.wsgi.application'
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
 
 DATABASES = {
     'default': {
@@ -118,6 +134,27 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django.db': {
+            'handlers': ['console'],
+            'level': 'DEBUG', # os.getenv('DJANGO_LOG_LEVEL', 'INFO')
+            'propagate': False,
+        },
+    },
+}
 
 MEDIA_URL = '/media/'
 
