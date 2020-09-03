@@ -7,8 +7,13 @@ from articles.models import Article
 def articles_list(request):
     template = 'articles/news.html'
     articles = Article.objects.order_by('-published_at')
+    sections = {}
+    for article in articles:
+        sections[article] = article.sections.order_by('name')
+    print(sections)
     context = {
-        'object_list': articles
+        'object_list': articles,
+        'sections_dict': sections
     }
 
 
