@@ -19,7 +19,7 @@ class Article(models.Model):
 class Section(models.Model):
 
     name = models.CharField(max_length=64, verbose_name='Название')
-    articles = models.ManyToManyField(
+    article = models.ManyToManyField(
         Article,
         through='Relationship',
         related_name='sections'
@@ -46,3 +46,7 @@ class Relationship(models.Model):
 
     def __str__(self):
         return f'{self.article}: {self.section}'
+
+    class Meta:
+        verbose_name = 'Тематика статьи'
+        verbose_name_plural = 'Тематика статьи'
