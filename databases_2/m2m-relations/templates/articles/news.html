@@ -14,12 +14,12 @@
           <a href="#">{{ article.title }}</a>
         </h4>
         <p class="card-text">{{ article.text }}</p>
-            {% for section in sections_dict|get_item:article %}
+            {% for section in sections_dict|get_value:article %}
               {% if section.relationship_set.first.is_main %}
                 <span class="badge badge-primary">{{ section.name }}</span>
               {% endif %}
             {% endfor %}
-           {% for section in sections_dict|get_item:article %}
+           {% for section in sections_dict|get_value:article %}
               {% if not section.relationship_set.first.is_main %}
                 <span class="badge badge-secondary">{{ section.name }}</span>
               {% endif %}
