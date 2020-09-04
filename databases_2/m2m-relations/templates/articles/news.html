@@ -1,5 +1,6 @@
 {% extends "articles/base.html" %}
 {% load static %}
+{% load dict_value_filter %}
 
 {% block title %}Новости{% endblock %}
 {% block content %}
@@ -13,20 +14,16 @@
           <a href="#">{{ article.title }}</a>
         </h4>
         <p class="card-text">{{ article.text }}</p>
-        {% for sections in sections_dict %}
-          {% if sections == article %}
-            {% for section in sections %}
+            {% for section in sections_dict|get_item:article %}
               {% if section.relationship_set.first.is_main %}
                 <span class="badge badge-primary">{{ section.name }}</span>
               {% endif %}
             {% endfor %}
-            {% for section in sections %}
+           {% for section in sections_dict|get_item:article %}
               {% if not section.relationship_set.first.is_main %}
                 <span class="badge badge-secondary">{{ section.name }}</span>
               {% endif %}
             {% endfor %}
-          {% endif %}
-        {% endfor %}
       </div>
     </div>
   </div>
