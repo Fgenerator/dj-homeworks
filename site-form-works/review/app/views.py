@@ -23,15 +23,14 @@ def product_view(request, pk):
     reviews = Review.objects.filter(product=product)
     is_review_exist = False
 
-    request.session.get('reviewed_products', [])
-    if pk in request.session['reviewed_products']:
+    if pk in request.session.get('reviewed_products', []):
         is_review_exist = True
 
     form = ReviewForm
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            if pk not in request.session['reviewed_products']:
+            if pk not in request.session.get('reviewed_products', []):
                 Review.objects.create(**form.cleaned_data, product=Product.objects.get(id=pk))
                 is_review_exist = True
                 reviewed_products_list = request.session.get('reviewed_products', [])
@@ -58,9 +57,7 @@ class ProductView(View):  # вариант решения через class based
         product = get_object_or_404(Product, id=pk)
         reviews = Review.objects.filter(product=product)
 
-        reviewed_products_list = request.session.get('reviewed_products', [])
-
-        if pk in reviewed_products_list:
+        if pk in request.session.get('reviewed_products', []):
             self.is_review_exist = True
 
         context = {
@@ -76,16 +73,15 @@ class ProductView(View):  # вариант решения через class based
         product = get_object_or_404(Product, id=pk)
         reviews = Review.objects.filter(product=product)
 
-        reviewed_products_list = request.session.get('reviewed_products', [])
-
-        if pk in reviewed_products_list:
+        if pk in request.session.get('reviewed_products', []):
             self.is_review_exist = True
 
         self.form = ReviewForm(request.POST)
         if self.form.is_valid():
-            if pk not in reviewed_products_list:
+            if pk not in request.session.get('reviewed_products', []):
                 Review.objects.create(**self.form.cleaned_data, product=Product.objects.get(id=pk))
                 self.is_review_exist = True
+                reviewed_products_list = request.session.get('reviewed_products', [])
                 reviewed_products_list.append(pk)
                 request.session['reviewed_products'] = reviewed_products_list
         # логика для добавления отзыва
