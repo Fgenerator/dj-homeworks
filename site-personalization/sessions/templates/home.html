@@ -7,6 +7,20 @@
     <div class="container">
         <div class="header">
             <h1>Игра "Угадай число"</h1>
+            {% if is_author %}
+                <h2>Загаданное число {{ number }}</h2>
+                <a>Другие игроки будут пытаться отгадать его</a>
+            {% endif %}
+            {% if not is_author and not brake %}
+                <a>Введите число</a>
+                <br>
+                <br>
+                <form action="{% url 'home' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form }} <input type="submit" value="Проверить"/>
+                </form>
+            {% endif %}
+            <h1>{{ message }}</h1>
         </div>
     </div>
 {% endblock %}
