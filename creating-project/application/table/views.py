@@ -6,8 +6,10 @@ from table.models import Column, Data
 
 from pathlib import Path
 
-
-CSV_FILENAME = Path(Data.get_path()).name
+try:
+    CSV_FILENAME = Path(Data.get_path()).name
+except IndexError:
+    CSV_FILENAME = 'phones.csv'
 
 COLUMNS = Column.objects.all().order_by('serial_number')
 
