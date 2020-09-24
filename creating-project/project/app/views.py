@@ -24,6 +24,7 @@ def station_view(request):
     template = 'stations.html'
 
     route = request.GET.get('route')
+    route_obj = Route.objects.get(name=route)
 
     stations = Station.objects.all()
     routes = Route.objects.all()
@@ -31,7 +32,7 @@ def station_view(request):
     context = {
         'stations': stations,
         'routes': routes,
-        'route': route,
+        'route': route_obj,
         'center': get_center()
     }
 
