@@ -12,11 +12,11 @@ class Station(models.Model):
     name = models.CharField(max_length=100)
 
     def get_routes(self):
-        return " ".join([route.name for route in self.routes.all()])
+        return ", ".join([route.name for route in self.routes.all()])
 
 
 class Route(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30, unique=True, default=None)
 
     def __str__(self):
         return self.name
