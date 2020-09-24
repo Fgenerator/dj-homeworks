@@ -21,7 +21,7 @@
         {% for item in stations %}
           myMap.geoObjects
             .add(new ymaps.Placemark([{{ item.latitude }}, {{ item.longitude }}], {
-              balloonContent: '{{ item.routes }}',
+              balloonContent: '{{ item.get_routes }}',
               iconCaption: '{{ item.name }}'
             }, {
               preset: 'islands#blueCircleDotIconWithCaption',
@@ -40,7 +40,7 @@
             <div class="col-md-4 form-top">
                 <select name="route" class="form-control">
                     {% for r in routes %}
-                        <option value="{{ r }}"{% if r == route %} selected{% endif %}>{{ r }}</option>
+                        <option value="{{ r }}"{% if r == route %} selected {% endif %}>{{ r }}</option>
                     {% endfor %}
                 </select>
             </div>
