@@ -22,7 +22,7 @@ def get_mtime(file):
     return converted_mtime
 
 
-def prepare_files(files, date=None):  # TODO filtration by ctime if date
+def prepare_files(files, date=None):
     temp_context = {
         'files': []
     }
@@ -31,13 +31,14 @@ def prepare_files(files, date=None):  # TODO filtration by ctime if date
 
         converted_mtime = get_mtime(file)
 
-        temp_context['files'].append(
-            {
-                'name': file.name,
-                'ctime': converted_ctime,
-                'mtime': converted_mtime
-            }
-        )
+        if not date or converted_ctime.date() == date.date():
+            temp_context['files'].append(
+                {
+                    'name': file.name,
+                    'ctime': converted_ctime,
+                    'mtime': converted_mtime
+                }
+            )
     return temp_context
 
 
@@ -49,7 +50,8 @@ def file_list(request, date=None):
         'date': ''
     }
     if date:
-        context['date'] = date
+        #context['date'] = date
+        context['files'] = prepare_files(files, date)['files']
 
     else:
         context['files'] = prepare_files(files)['files']
